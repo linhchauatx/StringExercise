@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -14,59 +13,51 @@ public class StringExercise1 {
         System.out.print("enter a character: ");
         String characterInput = scanner.nextLine();
 
-        manipulateString(stringInput,characterInput);
+        countACharInAString(stringInput, characterInput);
+        countAllCharsInAString(stringInput);
 
         System.out.println("Reverse the string: " + reverseString(stringInput));
     }
 
-    public static String[] covertStringToArray (String input) {
+    public static void countACharInAString(String input, String character) {
         String[] arr = input.split("");
-
-        Arrays.sort(arr);
-
-        return arr;
+        System.out.println("The number of times the character " + character +
+            " appeared in the String " + input +
+            ": " + countStringInArrray(arr, character));
     }
 
-    public static void manipulateString (String input, String character) {
-
-        int numberOfWantedCharacter = 0;
-        int numberOfDifferentCharacter = 0;
+    public static void countAllCharsInAString(String input) {
+        String[] arr = input.split("");
+        Arrays.sort(arr);
 
         ArrayList<String> listOfDifferentCharacters = new ArrayList<>();
 
+        // At the beginning, we have zero character
+        int count = 0;
 
-
-        for (int i = 0; i < covertStringToArray(input).length; i++) {
-            if(covertStringToArray(input)[i].equals(character)) {
-                numberOfWantedCharacter++;
+        for (int i = 0; i < arr.length; i++) {
+            // Always count the first char
+            if (i == 0) {
+              count++;
+              listOfDifferentCharacters.add(arr[i]);
             }
-
-            if(i == 0) {
-                numberOfDifferentCharacter++;
-                listOfDifferentCharacters.add(covertStringToArray(input)[i]);
-
-            }
-            else if (!(covertStringToArray(input)[i].equals(covertStringToArray(input)[i-1]))) {
-                numberOfDifferentCharacter++;
-                listOfDifferentCharacters.add(covertStringToArray(input)[i]);
-
+            // if current char is different than the previous, count it
+            else if (!(arr[i].equals(arr[i-1]))) {
+               count++;
+               listOfDifferentCharacters.add(arr[i]);
             }
         }
-        System.out.println("The number of times the character " + character + "appeared in the String: " + numberOfWantedCharacter);
-        System.out.println("The number of different characters in the String: " + numberOfDifferentCharacter);
 
+        System.out.println("The number of different characters in the String: " + count);
 
-        int numberOfEachCharacter = 0;
+        for (int i = 0; i < listOfDifferentCharacters.size(); i++) {
+            String characterInput = listOfDifferentCharacters.get(i);
+            System.out.println("Character: " + characterInput);
+            int charCount = countStringInArrray(arr, characterInput);
 
-        for (String c : listOfDifferentCharacters) {
-            for (String i: covertStringToArray(input)) {
-                if (i.equals(c)) {
-                    numberOfEachCharacter++;
-                }
-            }
-            System.out.println("The number of times that " + c + " shows up: " + numberOfEachCharacter);
-            numberOfEachCharacter = 0;
+            System.out.println("The number of times that " + characterInput + " shows up: " + charCount);
         }
+
     }
 
     public static StringBuilder reverseString (String stringInput) {
@@ -80,6 +71,16 @@ public class StringExercise1 {
 
         return reversedString;
 
+    }
+
+    private static int countStringInArrray(String[] arr, String aString) {
+        int count = 0;
+        for (String st: arr) {
+            if (st.equals(aString)) {
+                count ++;
+            }
+        }
+        return count;
     }
 }
 

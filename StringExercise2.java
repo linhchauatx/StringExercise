@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.Scanner;
 
 public class StringExercise2 {
@@ -8,82 +9,59 @@ public class StringExercise2 {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("enter a string: ");
-
         String stringInput = scanner.nextLine();
 
-        countDifferentCharacters(covertStringToArray(stringInput));
+        countDifferentCharacters(stringInput);
 
-        if(checkPalindromeString(covertStringToArray(stringInput))) {
-            System.out.println("The string is palindrome string ");
+        if(checkPalindromeString(stringInput)) {
+            System.out.println("The string is a palindrome string.");
         }
         else {
-            System.out.println("The string is not palindrome string ");
+            System.out.println("The string is not a palindrome string.");
         }
-
-}
-
-
-
-    public static String[] covertStringToArray (String input) {
-        String[] arr = input.split("");
-
-        return arr;
     }
 
+    public static void countDifferentCharacters (String stringInput) {
+        String[] arr = stringInput.split("");
+        Hashtable<String, Number> differentCharacters = new Hashtable<>();
 
-
-    public static void countDifferentCharacters (String[] stringInput) {
-        int numberOfDifferentCharacters = 0;
-
-        Arrays.sort(stringInput);
-        Hashtable<Number,String> differentCharacters = new Hashtable<>();
-
-        for (int i = 0;i < stringInput.length; i++) {
-
-
-            if (i==0 || !(stringInput[i].equals(stringInput[i-1]))) {
-                numberOfDifferentCharacters++;
-                differentCharacters.put(i,stringInput[i]);
+        for (int i = 0;i < arr.length; i++) {
+            Integer count = (Integer)differentCharacters.get(arr[i]);
+            if (count != null) {
+                count = new Integer(count.intValue() + 1);
             }
+            else {
+                count = new Integer(1);
+            }
+
+            differentCharacters.put(arr[i], count);
         }
 
-        System.out.println("The number of different characters in the String: " + numberOfDifferentCharacters);
+        Set<String> keys = differentCharacters.keySet();
 
-        int numberOfEachCharacter = 0;
+        System.out.println("The number of different characters in the String: " + keys.size());
 
-        for (String c : differentCharacters.values()) {
-            for (String i: stringInput) {
-                if (i.equals(c)) {
-                    numberOfEachCharacter++;
-                }
-            }
-            System.out.println("The number of times that " + c + " shows up: " + numberOfEachCharacter);
-            numberOfEachCharacter = 0;
+        for(String key: keys){
+            Number charCount = differentCharacters.get(key);
+            System.out.println("The number of times that " + key + " shows up: " + charCount);
         }
-
     }
 
+    public static boolean checkPalindromeString(String stringInput) {
+        String[] arr = stringInput.split("");
+        int leftIndex = 0;
+        int rightIndex = arr.length - 1;
 
-    public static boolean checkPalindromeString(String[] stringInput) {
+        while (leftIndex < rightIndex) {
+            if (!arr[leftIndex].equals(arr[rightIndex])) {
+                return false;
+            }
 
-     int num = stringInput.length-1;
+            leftIndex ++;
+            rightIndex --;
+        }
 
-
-         for (int i = 0; i <= stringInput.length/2-1; i++) {
-
-
-             for (int j = num; j >= stringInput.length/2; j--) {
-                 num--;
-
-                 if (!(stringInput[i].equals(stringInput[j]))) {
-                     return false;
-                 }
-                 break;
-             }
-
-         }
-
-     return true;
- }
+        return true;
+    }
 
 }
