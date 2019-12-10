@@ -41,6 +41,9 @@ public class StringExercise {
         String [] arr = stringInput.split("");
         Arrays.sort(arr);
 
+        System.out.println("arr = " + Arrays.toString(arr));
+
+
         ArrayList<String> arr1 = new ArrayList<>();
         int count = 1;
 
